@@ -15,36 +15,41 @@
             width: 500px;
             max-width: 80%;
             background-color: rgb(87, 174, 228);
-
             border-radius: 20px;
             margin: 100px auto;
             padding: 20px;
-
             transition: 0.3s ease;
         }
 
         .box:hover {
-            transform: scale(1.02);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
-        /* Image styling */
-        #projectImage {
+        .member {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .member:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        #preview {
+            display: block;
             width: 100%;
             max-width: 350px;
-            display: block;
-            margin: 15px auto;
+            margin: 20px auto 0;
             border-radius: 15px;
 
             opacity: 0;
             transform: translateY(10px);
             pointer-events: none;
-
-            transition: 0.4s ease;
+            transition: opacity 0.3s ease,
+                        transform 0.3s ease;
         }
 
-        /* Image becomes visible */
-        #projectImage.visible {
+        #preview.visible {
             opacity: 1;
             transform: translateY(0);
         }
@@ -60,31 +65,87 @@
         <p>Members:</p>
 
         <p>
-            Barrios, Hildane (Concept maker)<br>
-            Caiban, Justin (Website creator and assistant Designer of Poster)<br>
-            Torio, Peter (Lead Designer of Poster)<br>
-            Binag, Alexine (Leader)<br>
-            Conejo, Cherina (Concept maker)
+            <span class="member"
+                data-image="hildane.jpg"
+                data-name="Hildane Barrios">
+                Barrios, Hildane
+            </span>
+            (Concept maker)<br>
+
+            <span class="member"
+                data-image="justin.jpg"
+                data-name="Justin Caiban">
+                Caiban, Justin
+            </span>
+            (Website creator and assistant Designer of Poster)<br>
+
+            <span class="member"
+                data-image="peter.jpg"
+                data-name="Peter Torio">
+                Torio, Peter
+            </span>
+            (Lead Designer of Poster)<br>
+
+            <span class="member"
+                data-image="alexine.jpg"
+                data-name="Alexine Binag">
+                Binag, Alexine
+            </span>
+            (Leader)<br>
+
+            <span class="member"
+                data-image="cherina.jpg"
+                data-name="Cherina Conejo">
+                Conejo, Cherina
+            </span>
+            (Concept maker)
         </p>
 
-        <img
-            id="projectImage"
-            src="project.jpg"
-            alt="AP Project poster"
-        >
+        <img id="preview" src="" alt="Project preview">
 
     </div>
 
     <script>
         const box = document.getElementById("projectBox");
-        const image = document.getElementById("projectImage");
+        const preview = document.getElementById("preview");
 
-        box.addEventListener("mouseenter", function() {
-            image.classList.add("visible");
+        const poster = "poster.jpg";
+
+        function showImage(src, name) {
+            if (preview.getAttribute("src") !== src) {
+                preview.src = src;
+            }
+
+            preview.alt = name;
+            preview.classList.add("visible");
+        }
+
+        function hideImage() {
+            preview.classList.remove("visible");
+        }
+
+        // Hover over the box to show the poster
+        box.addEventListener("mouseenter", () => {
+            showImage(poster, "AP Project poster");
         });
 
-        box.addEventListener("mouseleave", function() {
-            image.classList.remove("visible");
+        // Detect whether the mouse is over a member's name
+        box.addEventListener("mousemove", (event) => {
+            const member = event.target.closest(".member");
+
+            if (member && box.contains(member)) {
+                showImage(
+                    member.dataset.image,
+                    member.dataset.name
+                );
+            } else {
+                showImage(poster, "AP Project poster");
+            }
+        });
+
+        // Hide the image when leaving the entire box
+        box.addEventListener("mouseleave", () => {
+            hideImage();
         });
     </script>
 
