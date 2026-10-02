@@ -1,41 +1,92 @@
+
 <!DOCTYPE html>
 <html>
 <head>
+    <title>AP Project</title>
+
     <style>
         body {
+            min-height: 100vh;
             background-color: rgb(22, 104, 131);
+            font-family: Arial, sans-serif;
         }
 
         .box {
             width: 500px;
-            height: 300px;
+            max-width: 80%;
             background-color: rgb(87, 174, 228);
 
             border-radius: 20px;
-
-            margin: auto;
-            margin-top: 100px;
-
+            margin: 100px auto;
             padding: 20px;
+
+            transition: 0.3s ease;
+        }
+
+        .box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Image styling */
+        #projectImage {
+            width: 100%;
+            max-width: 350px;
+            display: block;
+            margin: 15px auto;
+            border-radius: 15px;
+
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+
+            transition: 0.4s ease;
+        }
+
+        /* Image becomes visible */
+        #projectImage.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 
 <body>
 
-    <div class="box">
+    <div class="box" id="projectBox">
+
         <h1>AP Project</h1>
 
         <p>Members:</p>
 
         <p>
-            Barrios, Hildane<br>
-            Caiban, Justin (Website creator)<br>
-            Torio, Peter<br>
-            Binag, Alexine<br>
-            Conejo, Cherina
+            Barrios, Hildane (Concept maker)<br>
+            Caiban, Justin (Website creator and assistant Designer of Poster)<br>
+            Torio, Peter (Lead Designer of Poster)<br>
+            Binag, Alexine (Leader)<br>
+            Conejo, Cherina (Concept maker)
         </p>
+
+        <img
+            id="projectImage"
+            src="project.jpg"
+            alt="AP Project poster"
+        >
+
     </div>
+
+    <script>
+        const box = document.getElementById("projectBox");
+        const image = document.getElementById("projectImage");
+
+        box.addEventListener("mouseenter", function() {
+            image.classList.add("visible");
+        });
+
+        box.addEventListener("mouseleave", function() {
+            image.classList.remove("visible");
+        });
+    </script>
 
 </body>
 </html>
