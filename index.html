@@ -1,24 +1,36 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>AP Project</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            min-height: 500vh;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+
             background-color: rgb(22, 104, 131);
             font-family: Arial, sans-serif;
         }
 
         .box {
             width: 500px;
-            max-width: 80%;
+            max-width: calc(100% - 32px);
+
             background-color: rgb(87, 174, 228);
             border-radius: 20px;
-            margin: 100px auto;
+            margin: 40px auto;
             padding: 20px;
-            transition: 0.3s ease;
+
+            transition: box-shadow 0.3s ease;
         }
 
         .box:hover {
@@ -39,19 +51,39 @@
             display: block;
             width: 100%;
             max-width: 350px;
+            height: auto;
             margin: 20px auto 0;
             border-radius: 15px;
 
             opacity: 0;
             transform: translateY(10px);
             pointer-events: none;
-            transition: opacity 0.3s ease,
-                        transform 0.3s ease;
+
+            transition:
+                opacity 0.3s ease,
+                transform 0.3s ease;
         }
 
         #preview.visible {
             opacity: 1;
             transform: translateY(0);
+        }
+
+        /* Adjust spacing on small screens */
+        @media (max-width: 480px) {
+            .box {
+                margin: 20px auto;
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .members-list {
+                line-height: 1.8;
+            }
         }
     </style>
 </head>
@@ -64,7 +96,7 @@
 
         <p>Members:</p>
 
-        <p>
+        <p class="members-list">
             <span class="member"
                 data-image="hildane.jpg"
                 data-name="Hildane Barrios">
@@ -124,14 +156,8 @@
             preview.classList.remove("visible");
         }
 
-        // Hover over the box to show the poster
-        box.addEventListener("mouseenter", () => {
-            showImage(poster, "AP Project poster");
-        });
-
-        // Detect whether the mouse is over a member's name
-        box.addEventListener("mousemove", (event) => {
-            const member = event.target.closest(".member");
+        function showMemberOrPoster(target) {
+            const member = target.closest(".member");
 
             if (member && box.contains(member)) {
                 showImage(
@@ -141,11 +167,38 @@
             } else {
                 showImage(poster, "AP Project poster");
             }
-        });
+        }
 
-        // Hide the image when leaving the entire box
-        box.addEventListener("mouseleave", () => {
+        // DESKTOP: Only use hover behavior when a mouse is available.
+        const hasMouseHover = window.matchMedia(
+            "(hover: hover) and (pointer: fine)"
+        );
+
+        function enableMouseBehavior() {
+            box.addEventListener("mouseenter", handleMouseEnter);
+            box.addEventListener("mousemove", handleMouseMove);
+            box.addEventListener("mouseleave", handleMouseLeave);
+        }
+
+        function handleMouseEnter() {
+            showImage(poster, "AP Project poster");
+        }
+
+        function handleMouseMove(event) {
+            showMemberOrPoster(event.target);
+        }
+
+        function handleMouseLeave() {
             hideImage();
+        }
+
+        if (hasMouseHover.matches) {
+            enableMouseBehavior();
+        }
+
+        // MOBILE AND DESKTOP: Tapping/clicking also works.
+        box.addEventListener("click", (event) => {
+            showMemberOrPoster(event.target);
         });
     </script>
 
